@@ -1,0 +1,15 @@
+#calculator{
+    display: grid;
+    grid-template-columns: repeat(4, 64px);
+    grid-template-rows: repeat(5, 64px);
+    justify-content: center;
+    align-content: center;
+}
+#displayResult{
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+#display{
+    background-color: black;
+    color: aqua;
+}
