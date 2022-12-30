@@ -5,9 +5,10 @@ const resultBtn = document.querySelector('#result');
 const pastDisplay = document.querySelector('#pastDisplay');
 const display = document.querySelector('#display');
 const decimalBtn = document.querySelector('#decimal');
+const deleteBtn = document.querySelector('#delete');
 
-let pastValue = '';
-let currentValue = "";
+let pastValue = '0';
+let currentValue = "0";
 let currentOperator = '';
 let result = null;
 
@@ -36,11 +37,11 @@ function operate(fn, a, b){
     }
 }
 function clear(){
-    pastValue = '';
-    currentValue = "";
+    pastValue = '0';
+    currentValue = "0";
     currentOperator = '';
     result = null;
-    display.innerText = '0';
+    display.innerText = currentValue;
     pastDisplay.innerText = '';
 }
 function checkDecimal(number){
@@ -50,32 +51,51 @@ function checkDecimal(number){
 operators.forEach((operator) => operator.onclick = (e) =>{
     currentOperator = e.target.value;
     pastValue = currentValue;
-    currentValue = '';
+    currentValue = '0';
     if (pastValue === "") return pastDisplay.innerText = '0' + " " + currentOperator;
     pastDisplay.innerText = pastValue + " " + currentOperator;
+
 })
 
 numbers.forEach((number) => number.onclick = (e) =>{
     if (currentValue == result){
-        currentValue = ''
+        currentValue = '';
         currentValue += e.target.value;
         display.innerText = currentValue;
-    } else {
+    } else if (currentValue === '0'){
+        currentValue = e.target.value;
+        display.innerText = currentValue;
+    }else{
         currentValue += e.target.value;
         display.innerText = currentValue;
     }
 })
 resultBtn.onclick = () =>{ 
     if (pastValue === '') return;
+    if ((currentOperator === '÷') && (currentValue === '0'|| pastValue === '0')){
+        clear();
+        return alert('division by zero is not allowed');
+    }
     result = operate(currentOperator,pastValue * 1, currentValue * 1);
     display.innerText = result;
     pastDisplay.innerText = pastValue + " " + currentOperator + " " + currentValue + "  =" ;
     currentValue = result;
-    pastValue = '';
+    pastValue = '0';
 }
 clearBtn.onclick = clear;
 decimalBtn.onclick = (e) =>{
     if(currentValue.split('').find(checkDecimal) === '.') return;
     currentValue += e.target.value;
+    display.innerText = currentValue;
+}
+deleteBtn.onclick = () => {
+    currentValue = currentValue.split('');
+    let x = currentValue.pop();
+    currentValue = currentValue.join("");
+    if (currentValue === ""){
+        currentValue = '0';
+        return display.innerText = currentValue;
+        }
+    display.innerText = currentValue;
 }
 
