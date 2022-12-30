@@ -4,6 +4,7 @@ const clearBtn = document.querySelector('#clear');
 const resultBtn = document.querySelector('#result');
 const pastDisplay = document.querySelector('#pastDisplay');
 const display = document.querySelector('#display');
+const decimalBtn = document.querySelector('#decimal');
 
 let pastValue = '';
 let currentValue = "";
@@ -35,12 +36,15 @@ function operate(fn, a, b){
     }
 }
 function clear(){
-    let pastValue = '';
+    pastValue = '';
     currentValue = "";
     currentOperator = '';
     result = null;
     display.innerText = '0';
     pastDisplay.innerText = '';
+}
+function checkDecimal(number){
+    return number === '.';
 }
 
 operators.forEach((operator) => operator.onclick = (e) =>{
@@ -53,20 +57,25 @@ operators.forEach((operator) => operator.onclick = (e) =>{
 
 numbers.forEach((number) => number.onclick = (e) =>{
     if (currentValue == result){
-    currentValue = ''
-    currentValue += e.target.value;
-    display.innerText = currentValue;
-} else {
-    currentValue += e.target.value;
-    display.innerText = currentValue;
-}
+        currentValue = ''
+        currentValue += e.target.value;
+        display.innerText = currentValue;
+    } else {
+        currentValue += e.target.value;
+        display.innerText = currentValue;
+    }
 })
 resultBtn.onclick = () =>{ 
-if (pastValue === '') return;
-result = operate(currentOperator,pastValue * 1, currentValue * 1);
-display.innerText = result;
-pastDisplay.innerText = pastValue + " " + currentOperator + " " + currentValue + "  =" ;
-currentValue = result;
-pastValue = '';
+    if (pastValue === '') return;
+    result = operate(currentOperator,pastValue * 1, currentValue * 1);
+    display.innerText = result;
+    pastDisplay.innerText = pastValue + " " + currentOperator + " " + currentValue + "  =" ;
+    currentValue = result;
+    pastValue = '';
 }
 clearBtn.onclick = clear;
+decimalBtn.onclick = (e) =>{
+    if(currentValue.split('').find(checkDecimal) === '.') return;
+    currentValue += e.target.value;
+}
+
