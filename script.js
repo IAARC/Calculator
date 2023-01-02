@@ -77,11 +77,18 @@ resultBtn.onclick = () =>{
         return alert('division by zero is not allowed');
     }
     result = operate(currentOperator,pastValue * 1, currentValue * 1);
+    if (Number.isInteger(result) === false){
+        result = result.toFixed(3);  
+        display.innerText = result;
+        pastDisplay.innerText = pastValue + " " + currentOperator + " " + currentValue + "  =" ;
+        currentValue = result;
+        pastValue = '0';
+    } else {
     display.innerText = result;
     pastDisplay.innerText = pastValue + " " + currentOperator + " " + currentValue + "  =" ;
     currentValue = result;
     pastValue = '0';
-}
+}}
 clearBtn.onclick = clear;
 decimalBtn.onclick = (e) =>{
     if(currentValue.split('').find(checkDecimal) === '.') return;
